@@ -8,8 +8,8 @@
         "48": "./icons/icon48.png",
         "64": "./icons/icon64.png"
     },
-    "permissions": [
-        "activeTab"
+    "host_permissions": [
+        "https://*.smartschool.be/results/main/*"
       ],
       "content_scripts": [
         {
