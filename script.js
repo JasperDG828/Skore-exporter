@@ -38,21 +38,30 @@ function exportScore(format) {
     fetch('https://svi-gijzegem.smartschool.be/results/api/v1/evaluations/?pageNumber=1&itemsOnPage=300').then((res) => {
         return res.json()
     }).then((data) => {
-        let tests = []
+        // Get course filter
+        let courseFilter = document.getElementsByClassName("btn dropdown-button js-course-dropdown")[0].textContent
+
+        // Get period filter
+        let periodFilter = document.getElementsByClassName("btn dropdown-button js-period-dropdown")[0].textContent
+
         // For each test in api-return, create a new test in tests-array with right values
+        let tests = []
         data.forEach(el => {
-            const id = el["identifier"]
-            if (el["type"] == "normal") {
-                score = el["graphic"]["description"].replace(",", ".").split("/")
-                let n = parseFloat(score[0])
-                let d = parseFloat(score[1])
-                tests.push({ "name": el["name"], "scoreN": n, "scoreD": d, "percentage": el["graphic"]["value"], "teacher": el["gradebookOwner"]["name"]["startingWithFirstName"], "published": el["availabilityDate"], "course": el["courses"][0]["name"] })
+            // Check wether test is in filter
+            if ((courseFilter == "Alle vakken" || courseFilter.includes(el["courses"][0]["name"])) && (periodFilter=="Alle periodes" || periodFilter.includes(el["period"]["name"]))) {
+                const id = el["identifier"]
+                if (el["type"] == "normal") {
+                    score = el["graphic"]["description"].replace(",", ".").split("/")
+                    let n = parseFloat(score[0])
+                    let d = parseFloat(score[1])
+                    tests.push({ "name": el["name"], "scoreN": n, "scoreD": d, "percentage": el["graphic"]["value"], "teacher": el["gradebookOwner"]["name"]["startingWithFirstName"], "published": el["availabilityDate"], "course": el["courses"][0]["name"], "period": el["period"]["name"] })
+                }
             }
 
         });
         // Create link that downloads the file when clicked
         var element = document.createElement('a');
-        
+
         // Set link destination to the JSON file
         if (format == 'json') {
             element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(tests)));
@@ -60,9 +69,9 @@ function exportScore(format) {
         // Set link destination to the CSV file
         else if (format == 'csv') {
             // Generate CSV
-            let csv = "Name,ScoreN,ScoreD,Percentage,Teacher,Published,Course"
+            let csv = "Name,ScoreN,ScoreD,Percentage,Teacher,Published,Course,Period"
             tests.forEach(el => {
-                csv = csv + `\n"${el["name"]}",${el["scoreN"]},${el["scoreD"]},${el["percentage"]},"${el['teacher']}",${el['published']},"${el['course']}"`;
+                csv = csv + `\n"${el["name"]}",${el["scoreN"]},${el["scoreD"]},${el["percentage"]},"${el['teacher']}",${el['published']},"${el['course']}","${el['period']}"`;
             });
             element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(csv));
         }
@@ -77,6 +86,6 @@ function exportScore(format) {
         // Click the link and remove it from the DOM
         element.click();
         document.body.removeChild(element);
-        
+
     }).catch((err) => { console.error(err) });
 }
