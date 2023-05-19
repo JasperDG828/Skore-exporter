@@ -2,6 +2,7 @@
     "manifest_version": 3,
     "name": "Skore exporter",
     "description": "Export your smartschool results to JSON or CSV",
+    "author": "jasperdegus@gmail.com",
     "version": "1.0",
     "icons": {
         "16": "./icons/icon16.png",
