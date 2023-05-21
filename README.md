@@ -16,3 +16,5 @@ There are two ways of installing this extension:
 1) Download the source code of the latest release
 2) Turn on developer mode in your chromium browser (Extensions > Developer mode)
 3) Click 'Load Unpacked' in the extensions-tab
+
+![](https://cdn-150.anonfiles.com/1bC6E0saz8/a6b8277f-1684653186/Logo-page.png)
