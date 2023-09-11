@@ -35,7 +35,7 @@ function checkButtons() {
 
 function exportScore(format) {
     // Get tests from api
-    fetch('https://svi-gijzegem.smartschool.be/results/api/v1/evaluations/?pageNumber=1&itemsOnPage=300').then((res) => {
+    fetch('https://'+window.location.hostname+'/results/api/v1/evaluations/?pageNumber=1&itemsOnPage=300').then((res) => {
         return res.json()
     }).then((data) => {
         // Get course filter
